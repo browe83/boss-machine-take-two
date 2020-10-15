@@ -9,12 +9,19 @@ meetingsRouter.get("/", (req, res, next) => {
 
 meetingsRouter.post("/", (req, res, next) => {
   console.log("meetings post request received");
-  const newMeeting = req.body;
-  db.addToDatabase("meetings", newMeeting);
+  const newMeeting = db.addToDatabase("meetings", db.createMeeting());
   res.status(201).send(newMeeting);
 });
 
-// meetingsRouter.delete("/meetings", (req, res, next) => {
-
-// })
+meetingsRouter.delete("/", (req, res, next) => {
+  console.log("delete meetings request received");
+  db.deleteAllFromDatabase("meetings");
+  res
+    .status(201)
+    .send(
+      `All meetings successfully deleted. Meetings db empty: ${db.getAllFromDatabase(
+        "meetings"
+      )}`
+    );
+});
 module.exports = meetingsRouter;
